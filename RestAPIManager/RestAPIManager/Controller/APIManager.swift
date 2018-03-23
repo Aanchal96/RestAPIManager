@@ -9,49 +9,47 @@ import UIKit
 
 class APIManager {
     
-    func loginGet(parameters: [String:Any], success: @escaping (Entitites) -> Void){
+    let headers = [
+        "Cache-Control": "no-cache",
+        "Postman-Token": "31c411b7-c48e-4411-a656-e595f11aa7c2"
+    ]
+    
+    func loginGet(parameters: [String:Any], success: @escaping (Entities) -> Void){
         
-        let headers = [
-            "Cache-Control": "no-cache",
-            "Postman-Token": "31c411b7-c48e-4411-a656-e595f11aa7c2"
-        ]
-        let newString = stringMutation(parameters)
+        let newString = self.stringMutation(parameters)
         let baseURL = "https://httpbin.org/get?Username=\(newString)&Password=\(parameters["Password"]!)"
         
         NetworkManager().GET(headers: headers, url: baseURL, success:{ (data) in
-            print(".......")
-            print(data)
-            success(Entitites(args: data))}){error in print(Error.self)}
+            success(Entities(args: data))}){error in print(Error.self)}
     }
     
-    func stringMutation(_ parameters: [String:Any])-> String{
-        let str = parameters["Username"] as? String
+    func loginPost(forms: [String:Any], success: @escaping (Entities) -> Void,  failure: (Error)-> Void){
+        let headers = [
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+            "Cache-Control": "no-cache",
+            "Postman-Token": "177f5629-33da-45a5-992e-2a8565919c11"
+        ]
+        let newString = self.stringMutation(forms)
+        let baseURL = "https://httpbin.org/post?Username=\(newString)&Password=\(forms["Password"]!)"
+        
+        let body = "Username=\(newString)&Password=\(forms["Password"]!)"
+        
+        NetworkManager().POST(headers: headers, body: body, url: baseURL, success: {(data) in success(Entities(args: data))}){(error) in print(Error.self)
+        }
+    }
+}
+
+extension APIManager{
+    
+    //Creating a url string
+    
+    func stringMutation(_ dict: [String:Any])-> String{
+        let str = dict["Username"] as? String
         let newStr = str?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
         return newStr!
     }
-    
-    func loginPost(params: [String:Any],onSuccess success: @escaping (Entitites) -> Void){
-            
-            let parameters = [
-                [
-                    "name": "Username",
-                    "value": "Aanchal"
-                ],
-                [
-                    "name": "Password",
-                    "value": "12345"
-                ]
-            ]
-            
-            let headers = [
-                "content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-                "Cache-Control": "no-cache",
-                "Postman-Token": "aa8e1c98-3cbf-4d74-ac99-504c274a91a5"
-            ]
-            
-            let baseURL = "https://httpbin.org/post"
-        
-            let body = "Username=\(params["Username"])&Password=\(params["Password"]!)"
+}
+
 //            let error: NSError? = nil
 //            for param in parameters {
 //                let paramName = param["name"]!
@@ -71,8 +69,3 @@ class APIManager {
 //                    body += "\r\n\r\n\(paramValue)"
 //                }
 //            }
-
-            NetworkManager().POST(headers: headers, body: body, url: baseURL){(data) in
-success(Entitites(args: data))}
-        }
-}

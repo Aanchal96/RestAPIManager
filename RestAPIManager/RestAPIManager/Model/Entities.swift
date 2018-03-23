@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct Entitites{
+struct Entities{
     
     let pass: String
     let user: String
