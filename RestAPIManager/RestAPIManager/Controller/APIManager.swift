@@ -49,23 +49,3 @@ extension APIManager{
         return newStr!
     }
 }
-
-//            let error: NSError? = nil
-//            for param in parameters {
-//                let paramName = param["name"]!
-//                body += "--\(boundary)\r\n"
-//                body += "Content-Disposition:form-data; name=\"\(paramName)\""
-//                if let filename = param["fileName"] {
-//                    let contentType = param["content-type"]!
-//                    let fileContent = try! String(contentsOfFile: filename, encoding: String.Encoding.utf8)
-//                    if (error != nil) {
-//                        print(error!)
-//                    }
-//                    body += "; filename=\"\(filename)\"\r\n"
-//                    body += "Content-Type: \(contentType)\r\n\r\n"
-//                    body += fileContent
-//                }
-//                else if let paramValue = param["value"] {
-//                    body += "\r\n\r\n\(paramValue)"
-//                }
-//            }
