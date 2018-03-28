@@ -14,15 +14,18 @@ class APIManager {
         "Postman-Token": "31c411b7-c48e-4411-a656-e595f11aa7c2"
     ]
     
+    //MARK:--> GET Request
     func loginGet(parameters: [String:Any], success: @escaping (Entities) -> Void){
         
         let newString = self.stringMutation(parameters)
         let baseURL = "https://httpbin.org/get?Username=\(newString)&Password=\(parameters["Password"]!)"
         
+        //MARK:--> Calling Network Manager
         NetworkManager().GET(headers: headers, url: baseURL, success:{ (data) in
             success(Entities(args: data))}){error in print(Error.self)}
     }
     
+    //MARK:--> POST Request
     func loginPost(forms: [String:Any], success: @escaping (Entities) -> Void,  failure: (Error)-> Void){
         let headers = [
             "content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
@@ -41,8 +44,7 @@ class APIManager {
 
 extension APIManager{
     
-    //Creating a url string
-    
+    //MARK:--> Creating a url string
     func stringMutation(_ dict: [String:Any])-> String{
         let str = dict["Username"] as? String
         let newStr = str?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)

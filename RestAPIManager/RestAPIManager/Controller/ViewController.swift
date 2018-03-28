@@ -9,45 +9,48 @@
 import UIKit
 
 class ViewController: UIViewController {
- 
-    //declaring variables to store model values
+    
+    //MARK:--> Variable Declaration
     var boolean = false
     var args = ["":""]
     var forms = ["":""]
-    
     var user = ""
     var pass = ""
     var origin = ""
     
+    //MARK:--> Outlets
     @IBOutlet weak var userNameTF: UITextField!
+    
     @IBOutlet weak var passwordTF: UITextField!
     
     @IBOutlet weak var userNameLabel: UILabel!
+    
     @IBOutlet weak var passwordLabel: UILabel!
+    
     @IBOutlet weak var originLabel: UILabel!
     
     @IBAction func getDetailsBtn(_ sender: Any) {
+        
         self.args["Username"] = self.userNameTF.text
         self.args["Password"] = self.passwordTF.text
         
-        // Calling GET Request
+        //MARK:--> Calling GET Request
         self.getAPI()
-
-        //Writing and Displaying the label
+        
+        //MARK:--> Displaying labels
         self.getLabels()
-
     }
     
     @IBAction func postDetailsBtn(_ sender: Any) {
         self.forms["Username"] = self.userNameTF.text
         self.forms["Password"] = self.passwordTF.text
         
-        // Calling POST Request
+        //MARK:--> Calling POST Request
         self.postAPI()
-   
-        //Writing and Displaying the label
+        
+        //MARK:--> Displaying labels
         self.getLabels()
-
+        
     }
     
     override func viewDidLoad() {
@@ -62,7 +65,6 @@ class ViewController: UIViewController {
 extension ViewController{
     
     //MARK: --> Getting API for GET method
-    
     func getAPI(){
         APIManager().loginGet(parameters: self.args){(args) in
             DispatchQueue.main.async {
@@ -73,7 +75,6 @@ extension ViewController{
     }
     
     //MARK: --> Getting API for POST method
-    
     func postAPI(){
         
         APIManager().loginPost(forms: self.forms, success: {(args) in
@@ -86,17 +87,17 @@ extension ViewController{
         }
     }
     
+    //MARK:--> Writing Labels
     func getLabels(){
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute:{
-        self.userNameLabel.text = self.user
-        self.passwordLabel.text = self.pass
-        self.originLabel.text = self.origin
-        
-        //MARK: --> Displaying the labels
-        
-        self.userNameLabel.isHidden = self.boolean
-        self.passwordLabel.isHidden = self.boolean
-        self.originLabel.isHidden = self.boolean
+            self.userNameLabel.text = self.user
+            self.passwordLabel.text = self.pass
+            self.originLabel.text = self.origin
+            
+            //MARK: --> Displaying the labels
+            self.userNameLabel.isHidden = self.boolean
+            self.passwordLabel.isHidden = self.boolean
+            self.originLabel.isHidden = self.boolean
         })
     }
 }

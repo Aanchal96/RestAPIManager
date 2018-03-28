@@ -12,7 +12,7 @@ struct Entities{
     let pass: String
     let user: String
     let origin: String
-
+    
     init(args: JSON){
         
         self.pass = args["args"]["Password"].string!
@@ -20,3 +20,5 @@ struct Entities{
         self.origin = args["origin"].string!
     }
 }
+
+

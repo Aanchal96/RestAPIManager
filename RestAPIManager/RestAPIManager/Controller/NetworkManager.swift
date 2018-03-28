@@ -9,21 +9,19 @@
 import Foundation
 
 class NetworkManager{
-
-    // GET Request
     
+    //MARK:--> GET Request
     func GET(headers: [String:String], url: String, success: @escaping (JSON)->(), failure: @escaping(Error) -> Void){
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: 10.0)
         
         request.httpMethod = "GET"
-
+        
         fetchRequest(headers, request, url, success, failure)
     }
     
-    //POST Request
-    
+    //MARK:--> POST Request
     func POST(headers: [String:String],body: String, url: String, success: @escaping (JSON)->(), failure: @escaping(Error) -> Void){
         
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
@@ -38,7 +36,6 @@ class NetworkManager{
     }
     
     //MARK: --> Function to create URL session
-    
     fileprivate func fetchRequest(_ headers: [String:String], _ request: NSMutableURLRequest, _ url: String,_ success: @escaping (JSON) -> (), _ failure: @escaping (Error) -> Void) {
         
         request.allHTTPHeaderFields = headers
@@ -52,7 +49,8 @@ class NetworkManager{
             }
             else {
                 do{
-                    let json = try JSON(data: data!)
+                    guard let data = data else{return}
+                    let json = try JSON(data: data)
                     success(json)
                 }
                 catch(let error){
@@ -61,7 +59,6 @@ class NetworkManager{
                 }
             }
         })
-        
         dataTask.resume()
     }
 }
